@@ -92,12 +92,25 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-
+        
+    - name: echo dir
+      if: success()
+      run: |
+        echo $PWD
+        ls -a
+        
+    - name: archive release
+      uses: thedoctor0/zip-release@main
+      with:
+        path: openwrt
+        type: 'zip'
+        filename: 'openwrt.zip'
+        
     - name: echo dir
       run: |
         echo $PWD
         ls -a
-        echo "FILE_NAME=openwrt/*" >> $GITHUB_ENV
+        echo "FILE_NAME=openwrt.zip" >> $GITHUB_ENV
 
     - name: Upload zip directory
       uses: actions/upload-artifact@main
